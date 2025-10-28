@@ -1,5 +1,6 @@
 #![allow(unused)]
 use clap::Parser;
+use anyhow::{Context, Result};
 
 #[derive(Parser)]
 struct Cli {
@@ -10,11 +11,10 @@ struct Cli {
 #[derive(Debug)]
 struct CustomError(String);
 
-fn main() -> Result<(), CustomError> {
+fn main() -> Result<()> {
     let args = Cli::parse();
     let content = std::fs::read_to_string(&args.file)
-        .map_err(|err| CustomError(format!("エラー内容: `{}`: {}", args.file.display(), err)))?;
-
+        .with_context(|| format!("エラー内容 : {}が見つかりません", args.file.display()))?;
     println!("{}", content);
     Ok(())
 }
