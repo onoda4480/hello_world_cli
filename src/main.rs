@@ -7,9 +7,14 @@ struct Cli {
     file: std::path::PathBuf,
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[derive(Debug)]
+struct CustomError(String);
+
+fn main() -> Result<(), CustomError> {
     let args = Cli::parse();
-    let content = std::fs::read_to_string(&args.file)?;
+    let content = std::fs::read_to_string(&args.file)
+        .map_err(|err| CustomError(format!("エラー内容: `{}`: {}", args.file.display(), err)))?;
+
     println!("{}", content);
     Ok(())
 }
