@@ -1,19 +1,15 @@
-use std::env;
+#![allow(unused)]
+use clap::Parser;
 
-#[derive(Debug)]
-struct User {
-    name: String,
-    age: u8,
+#[derive(Parser)]
+struct Cli {
+    text: String,
+    file: std::path::PathBuf,
 }
 
 fn main() {
-    let arg1 = env::args().nth(1).expect("nameがありません");
-    let arg2 = env::args().nth(2).expect("ageがありません");
-    let args = User {
-        name: arg1,
-        age: arg2.parse().expect("age must be a number"),
-    };
-    println!("「:?」を使った場合  {:?}", args);
-    println!("「:#?」を使った場合 is {:#?}", args);
-    println!("「1:?」 : {1:?}, 「0:?」 : {0:?}", args.name, args.age);
+    let args = Cli::parse();
+    let content = std::fs::read_to_string(&args.file).expect("could not read file");
+    println!("input : {}", args.text);
+    println!("file contents  : {}", content);
 }
