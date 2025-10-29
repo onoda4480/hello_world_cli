@@ -4,6 +4,6 @@ fn main() {
     let out = stdout();
     let mut out = out.lock();
     for _ in 0..10_000_000 {
-        writeln!(out, "").unwrap();
+        write!(out, "").unwrap();
     }
 }
