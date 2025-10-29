@@ -1,9 +1,10 @@
-use std::io::{stdout, Write};
+#![allow(unused)]
+use indicatif::ProgressBar;
 
 fn main() {
-    let out = stdout();
-    let mut out = out.lock();
-    for _ in 0..10_000_000 {
-        write!(out, "").unwrap();
+    let pb = ProgressBar::new(100_000_000);
+    for i in 0..100_000_000 {
+        pb.inc(1);
     }
+    pb.finish_with_message("done");
 }
